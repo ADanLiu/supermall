@@ -129,7 +129,7 @@ export default {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
 
-        //完成了上拉加载更多
+        //加载之后要finish 才能下一次滚动加载
         this.$refs.scroll.finishPullUp();
       });
     },
