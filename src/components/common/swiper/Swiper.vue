@@ -109,7 +109,9 @@
        */
       setTransform: function (position) {
         this.swiperStyle.transform = `translate3d(${position}px, 0, 0)`;
+        //webkit 表示对safari的支持
         this.swiperStyle['-webkit-transform'] = `translate3d(${position}px), 0, 0`;
+        //-ms 表示对IE的支持
         this.swiperStyle['-ms-transform'] = `translate3d(${position}px), 0, 0`;
       },
 
@@ -229,7 +231,7 @@
 
   .indi-item {
     box-sizing: border-box;
-    width: 8px;
+    width: 12px;
     height: 8px;
     border-radius: 4px;
     background-color: #fff;
