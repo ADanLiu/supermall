@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" ref="wrapper">
-    <div>
+    <div class="content">
       <slot></slot>
     </div>
   </div>
@@ -27,6 +27,10 @@ export default {
     };
   },
   mounted() {
+    //设置2ms延迟，确保页面资源被加载完成之后再创建BScroll对象，要不然不可以滚动
+    // setTimeout(() => {
+
+    // },150);
     //创建BScroll对象
     this.scroll = new BScroll(this.$refs.wrapper, {
       click: true,
@@ -56,7 +60,11 @@ export default {
       this.scroll.finishPullUp();
     },
     refresh() {
+      // console.log("-----");
       this.scroll && this.scroll.refresh();
+    },
+    getScrollY() {
+      return this.scroll ? this.scroll.y : 0;
     },
   },
 };

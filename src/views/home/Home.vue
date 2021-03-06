@@ -1,7 +1,13 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-
+    <tab-control
+      :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+      ref="tabControl1"
+      class="tab-control"
+      v-show="isTabFixed"
+    ></tab-control>
     <scroll
       class="content"
       ref="scroll"
@@ -10,17 +16,17 @@
       :pull-up-load="true"
       @pullingUp="loadMore"
     >
-      <home-swiper :banners="banners" />
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad" />
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
       <tab-control
-        class="tab-control"
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
+        ref="tabControl2"
       ></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
-    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+    <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -33,10 +39,9 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "common/utils";
+import {itemListenerMixin,backTopMixin} from 'common/mixin';
 
 export default {
   name: "Home",
@@ -48,8 +53,8 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
   },
+  mixins:[itemListenerMixin,backTopMixin],
   data() {
     return {
       banners: [],
@@ -60,13 +65,25 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
-      isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false,
+      saveY: 0,
     };
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
     },
+  },
+  activated() {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    this.$refs.scroll.refresh();
+  },
+  deactivated() {
+    //保存Y值
+    this.saveY = this.$refs.scroll.getScrollY();
+    //取消全局事件的监听
+    this.$bus.$off("itemImageLoad", this.itemImgListener);
   },
   created() {
     //请求多个数据
@@ -78,12 +95,15 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
-    //监听item中图片加载完成
-    const refresh = debounce(this.$refs.scroll.refresh, 200);
+    //已使用混入mixin代替
+    // //监听item中图片加载完成
+    // const refresh = debounce(this.$refs.scroll.refresh, 100);
 
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
+    // //对监听事件进行保存
+    // this.itemImgListener = () => {
+    //   refresh();
+    // };
+    // this.$bus.$on("itemImageLoad", this.itemImgListener);
   },
 
   methods: {
@@ -102,15 +122,23 @@ export default {
           this.currentType = "sell";
           break;
       }
-    },
-    backClick() {
-      this.$refs.scroll.scrollTo(0, 0, 500);
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
     },
     contentScroll(position) {
+      //判断backTop是否显示
       this.isShowBackTop = -position.y > 1000;
+
+      //决定tabControl是否吸顶（position：fixed)
+      this.isTabFixed = -position.y > this.tabOffsetTop;
     },
     loadMore() {
       this.getHomeGoods(this.currentType);
+    },
+    swiperImageLoad() {
+      //获取tabControl的offsetTop
+      //所有组件都有一个el属性，用于获取组件中的元素
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     },
 
     /* 
@@ -139,30 +167,28 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
   height: 100vh;
   position: relative;
 }
 
 .home-nav {
   background-color: var(--color-tint);
-  color: white;
+  color: #fff;
 
-  position: fixed;
+  /* position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9;
+  z-index: 9; */
 }
-
 .tab-control {
-  position: sticky;
-  top: 44px;
+  position: relative;
   z-index: 9;
 }
 .content {
   /* height: 400px; */
-  /* overflow: hidden; */
+  overflow: hidden;
   position: absolute;
   top: 44px;
   bottom: 44px;
