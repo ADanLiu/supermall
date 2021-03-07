@@ -158,7 +158,13 @@ export default {
       product.iid = this.iid;
       //将商品添加到购物车
       this.$store.dispatch("addCart", product).then((res) => {
-        console.log(res);
+        // this.show = true;
+        // this.message = res;
+        // setTimeout(() => {
+        //   this.show = false;
+        //   this.message = "";
+        // }, 1500);
+        this.$toast.show(res, 1500);
       });
     },
   },

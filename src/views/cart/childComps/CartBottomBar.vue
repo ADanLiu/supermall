@@ -7,7 +7,7 @@
     />
     <span>全选</span>
     <span class="total-price">合计: ¥{{ totalPrice }}</span>
-    <span class="buy-product">去计算({{ checkLength }})</span>
+    <span class="buy-product" @click="payClick">去购买({{ checkLength }})</span>
   </div>
 </template>
 
@@ -54,6 +54,12 @@ export default {
         });
       }
     },
+    payClick(){
+      let hasSelectPro=this.cartList.find(item => item.checked);
+      if(!hasSelectPro){
+        this.$toast.show('请选择要购买的商品')
+      }
+    }
   },
 };
 </script>
