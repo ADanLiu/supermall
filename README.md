@@ -8,6 +8,8 @@ http://shoppingstreet.space
 
 pc端请使用chrome手机模式预览
 
+---
+
 ### 项目主要用到技术栈
 
 - vue2
@@ -17,6 +19,8 @@ pc端请使用chrome手机模式预览
 - axios
 - webpack
 - git
+
+---
 
 ### 项目效果
 
@@ -28,7 +32,7 @@ pc端请使用chrome手机模式预览
 
 #### 购物车
 
-
+![home](https://github.com/ADanLiu/supermall/blob/master/readmeImage/home.gif)
 
 
 
