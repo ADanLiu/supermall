@@ -32,7 +32,7 @@ pc端请使用chrome手机模式预览
 
 #### 购物车
 
-![home](https://github.com/ADanLiu/supermall/blob/master/readmeImage/home.gif)
+![home](https://github.com/ADanLiu/supermall/blob/master/readmeImage/home.gif#pic_left 467x831)
 
 
 
