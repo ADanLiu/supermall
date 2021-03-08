@@ -32,27 +32,21 @@ pc端请使用chrome手机模式预览
 
 #### 购物车
 
-<img src="https://github.com/ADanLiu/supermall/blob/master/readmeImage/home.gif" width="30%" height="30%" alt="home"/><br/>
+<img src="https://github.com/ADanLiu/supermall/blob/master/readmeImage/home.gif" width="30%" height="30%" alt="home"/><img src="https://github.com/ADanLiu/supermall/blob/master/readmeImage/detail.gif" width="30%" height="30%" alt="detail"/>
 
+<img src="https://github.com/ADanLiu/supermall/blob/master/readmeImage/category.gif" width="30%" height="30%" alt="category"/><img src="https://github.com/ADanLiu/supermall/blob/master/readmeImage/cart.gif" width="30%" height="30%" alt="cart"/>
 
-
-
-
-## Project setup
+### 项目安装
 
 ```
+# 安装依赖
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# 项目在线调试
 npm run serve
-```
 
-### Compiles and minifies for production
-```
+#项目打包
 npm run build
+
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
